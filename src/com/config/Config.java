@@ -5,6 +5,7 @@ package com.config;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.sql.ResultSet;
 
 public class Config {
@@ -22,25 +23,30 @@ public class Config {
   private static void configConnection() {
     try {
       conn = DriverManager.getConnection(dbURL, user, pass);
-      System.out.println("Connected");
     } catch (Exception e) {
       e.printStackTrace();
     }
   }
 
   // get all data
-  public static String getAllData() {
+  public static String[][] getAllData() {
     configConnection();
-    String data = "Maaf data tidak ada";
+    ArrayList<Integer> idBarang = new ArrayList<Integer>();
+    ArrayList<String> namaBarang = new ArrayList<String>();
+    ArrayList<String> deskripsiBarang = new ArrayList<String>();
+    ArrayList<Integer> hargaBarang = new ArrayList<Integer>();
+
     try {
       state = conn.createStatement();
       String query = "SELECT * FROM tbl_barang WHERE statusBarang = 1";
       result = state.executeQuery(query);
-      data = "";
 
       while (result.next()) {
-        data += "ID BARANG : " + (result.getInt("idBarang")) +
-            " NAMA BARANG : " + (result.getString("namaBarang")) + "\n";
+        idBarang.add(result.getInt("idBarang"));
+        namaBarang.add(result.getString("namaBarang"));
+        deskripsiBarang.add(result.getString("deskripsiBarang"));
+        hargaBarang.add(result.getInt("hargaBarang"));
+        System.out.println(result.getInt("idBarang"));
       }
 
       state.close();
@@ -48,7 +54,28 @@ public class Config {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return data;
+
+    String[][] resultBarang = new String[idBarang.size()][4];
+    for (int i = 0; i < resultBarang.length; i++) {
+      for (int j = 0; j < resultBarang[0].length; j++) {
+        switch (j) {
+          case 1:
+            resultBarang[i][j] = idBarang.get(i).toString();
+            break;
+          case 2:
+            resultBarang[i][j] = namaBarang.get(i);
+            break;
+          case 3:
+            resultBarang[i][j] = deskripsiBarang.get(i);
+            break;
+          case 4:
+            resultBarang[i][j] = hargaBarang.get(i).toString();
+            break;
+        }
+      }
+    }
+
+    return resultBarang;
   }
 
   public static String getDetailData(int id) {

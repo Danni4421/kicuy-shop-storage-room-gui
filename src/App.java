@@ -1,17 +1,16 @@
-import com.config.Config;
 
-import javax.swing.JButton;
+// panel
+import com.Panel.PanelTemplate;
+
+// frame n component
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
+import javax.swing.JLabel;
+import javax.swing.JButton;
 
 // pallete
 import java.awt.Color;
 import java.awt.Font;
-import java.util.ArrayList;
-
 public class App {
         public static void main(String[] args) throws Exception {
                 // code start from here
@@ -65,7 +64,7 @@ public class App {
                         mainPanel.repaint();
                         mainPanel.revalidate();
 
-                        panelGetAllData("DATA BARANG", mainPanel);
+                        PanelTemplate.panelGetAllData("DATA BARANG", mainPanel);
                 });
 
                 // btn search data
@@ -107,27 +106,5 @@ public class App {
 
                 // setVisible to set visibility (true) -> visible, (false) -> hidden
                 frameWindow.setVisible(true);
-        }
-
-        private static void panelGetAllData(String title, JPanel mainPanel) {
-                JPanel getDataPanel = new JPanel();
-                getDataPanel.setBounds(0, 0, 1024, 624);
-                getDataPanel.setBackground(new Color(196, 213, 229));
-                JLabel titleLabel = new JLabel(title);
-                titleLabel.setBounds(20, 0, 400, 100);
-                titleLabel.setFont(new Font("Arial", Font.PLAIN, 40));
-
-                String[] columnName = { "ID Barang", "Nama Barang",
-                                "Deskripsi Barang", "Harga Barang" };
-                JTable tableData = new JTable(Config.getAllData(), columnName);
-                JScrollPane tableScroll = new JScrollPane(tableData);
-                tableScroll.setBounds(20, 80, 700, 300);
-
-                getDataPanel.add(titleLabel);
-                getDataPanel.add(tableScroll);
-                getDataPanel.setLayout(null);
-                mainPanel.add(getDataPanel);
-                mainPanel.repaint();
-                mainPanel.revalidate();
         }
 }

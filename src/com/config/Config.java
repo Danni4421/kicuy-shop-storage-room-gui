@@ -46,7 +46,6 @@ public class Config {
         namaBarang.add(result.getString("namaBarang"));
         deskripsiBarang.add(result.getString("deskripsiBarang"));
         hargaBarang.add(result.getInt("hargaBarang"));
-        System.out.println(result.getInt("idBarang"));
       }
 
       state.close();
@@ -59,16 +58,16 @@ public class Config {
     for (int i = 0; i < resultBarang.length; i++) {
       for (int j = 0; j < resultBarang[0].length; j++) {
         switch (j) {
-          case 1:
+          case 0:
             resultBarang[i][j] = idBarang.get(i).toString();
             break;
-          case 2:
+          case 1:
             resultBarang[i][j] = namaBarang.get(i);
             break;
-          case 3:
+          case 2:
             resultBarang[i][j] = deskripsiBarang.get(i);
             break;
-          case 4:
+          case 3:
             resultBarang[i][j] = hargaBarang.get(i).toString();
             break;
         }
@@ -99,32 +98,21 @@ public class Config {
     return data;
   }
 
-  public static String getSearchedData(String keyword) {
+  public static ResultSet getSearchedData(String keyword) {
     configConnection();
-    String data = "Keyword tidak ditemukan pada data manapun!!";
     try {
       state = conn.createStatement();
-      String query = "SELECT * FROM tbl_barang WHERE idBarang LIKE '" + keyword +
-          "' OR namaBarang LIKE '" + keyword + "'" + "' OR hargaBarang LIKE '" + keyword +
-          "' OR deskripsiBarang LIKE '" + keyword + "' AND statusBarang = 1";
+      String query = "SELECT * FROM tbl_barang WHERE idBarang LIKE '%" + keyword +
+          "%' OR namaBarang LIKE '%" + keyword + "%'  OR hargaBarang LIKE '%" + keyword +
+          "%' OR deskripsiBarang LIKE '%" + keyword + "%' AND statusBarang = 1";
 
       result = state.executeQuery(query);
 
-      while (result.next()) {
-        data += "\nID BARANG : " + (result.getInt("idBarang")) +
-            "\nNAMA BARANG : " + (result.getString("namaBarang")) +
-            "\nHARGA BARANG : " + (result.getInt("hargaBarang")) +
-            "\nDESKRPSI BARANG : " + (result.getString("deskripsiBarang")) +
-            "===================================";
-      }
-
-      state.close();
-      conn.close();
     } catch (Exception e) {
       e.printStackTrace();
     }
 
-    return data;
+    return result;
   }
 
   public static boolean updateData(String[] value, int choice, int id) {

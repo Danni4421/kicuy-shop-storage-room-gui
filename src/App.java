@@ -11,6 +11,7 @@ import javax.swing.JButton;
 // pallete
 import java.awt.Color;
 import java.awt.Font;
+
 public class App {
         public static void main(String[] args) throws Exception {
                 // code start from here
@@ -73,6 +74,14 @@ public class App {
                                 btnGetAllData.getHeight() + 30, 230, 80);
                 btnSearchData.setBackground(new Color(120, 120, 120));
                 sideBar.add(btnSearchData);
+
+                btnSearchData.addActionListener(e -> {
+                        mainPanel.removeAll();
+                        mainPanel.repaint();
+                        mainPanel.revalidate();
+
+                        PanelTemplate.panelSearchData("SEARCH BARANG", mainPanel);
+                });
 
                 // btn update data
                 JButton btnUpdateData = new JButton("Update Data");

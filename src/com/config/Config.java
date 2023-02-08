@@ -127,17 +127,17 @@ public class Config {
           break;
         // ganti harga
         case 2:
-          query += "SET (`hargaBarang` = '" + Integer.parseInt(value[0]) +
+          query += "SET (`hargaBarang` = '" + value[0] +
               "') WHERE idBarang = " + id;
           break;
         // ganti deskripsi
         case 3:
-          query += "SET (`deskripsiBarang` = '" + value[0] + "') WHERE idBarang = " + id;
+          query += "SET (`deskripsiBarang` = '" + Integer.parseInt(value[0]) + "') WHERE idBarang = " + id;
           break;
       }
     } else if (value.length > 1) {
-      query += "SET (`namaBarang` = '" + value[0] + "', `hargaBarang` = '" + value[1] +
-          "', `deskripsiBarang` = '" + value[2] + "') WHERE idBarang = " + id;
+      query += "SET `namaBarang` = '" + value[0] + "', `deskripsiBarang` = '" + value[1] +
+          "', `hargaBarang` = '" + Integer.parseInt(value[2]) + "' WHERE idBarang = " + id;
     }
 
     try {

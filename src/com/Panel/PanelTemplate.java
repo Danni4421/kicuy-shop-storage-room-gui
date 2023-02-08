@@ -7,7 +7,10 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.JScrollPane;
 
 import java.awt.Color;
@@ -134,5 +137,102 @@ public class PanelTemplate {
     }
 
     return data;
+  }
+
+  private static int idBarang = 0;
+
+  public static void panelUpdateData(String title, JPanel mainPanel) {
+
+    JPanel panelUpdate = new JPanel();
+    panelUpdate.setBounds(0, 0, 1024, 624);
+    panelUpdate.setBackground(new Color(196, 213, 229));
+
+    JLabel panelLabel = new JLabel("Tambah & Update Data");
+    panelLabel.setBounds(20, 0, 400, 50);
+    panelLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+    panelUpdate.add(panelLabel);
+
+    // txtField name
+    JLabel nameLabel = new JLabel("Nama Barang");
+    nameLabel.setBounds(20, panelLabel.getY() + 50, 150, 50);
+    nameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    panelUpdate.add(nameLabel);
+    JTextField txtName = new JTextField();
+    txtName.setMargin(new Insets(0, 10, 0, 10));
+    txtName.setBounds(nameLabel.getX() + 120, nameLabel.getY(), 300, 40);
+    txtName.setText("");
+    panelUpdate.add(txtName);
+
+    // txtField harga
+    JLabel hargaLabel = new JLabel("Harga Barang");
+    hargaLabel.setBounds(nameLabel.getX(), nameLabel.getY() + 50, 150, 50);
+    hargaLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    panelUpdate.add(hargaLabel);
+    JTextField textHarga = new JTextField();
+    textHarga.setMargin(new Insets(0, 10, 0, 10));
+    textHarga.setBounds(hargaLabel.getX() + 120, hargaLabel.getY(), 300, 40);
+    textHarga.setText("");
+    panelUpdate.add(textHarga);
+
+    // txtArea deskripsi
+    JLabel deskripsiLabel = new JLabel("Deskripsi Barang");
+    deskripsiLabel.setBounds(hargaLabel.getX(), hargaLabel.getY() + 50, 150, 50);
+    deskripsiLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+    panelUpdate.add(deskripsiLabel);
+    JTextArea deskripsiTxt = new JTextArea();
+    deskripsiTxt.setMargin(new Insets(10, 10, 10, 10));
+    deskripsiTxt.setLineWrap(true);
+    deskripsiTxt.setWrapStyleWord(true);
+    deskripsiTxt.setText("");
+    JScrollPane scrollDeskripsi = new JScrollPane(deskripsiTxt);
+    scrollDeskripsi.setBounds(deskripsiLabel.getX() + 120, deskripsiLabel.getY(), 300, 100);
+    panelUpdate.add(scrollDeskripsi);
+
+    // table barang
+    String column[] = { "ID BARANG", "NAMA BARANG", "DESKRIPSI BARANG", "HARGA BARANG" };
+    JTable tableData = new JTable(Config.getAllData(), column);
+    JScrollPane scrollTable = new JScrollPane(tableData);
+    scrollTable.setBounds(nameLabel.getX() + 430, nameLabel.getY(), 520, 200);
+    panelUpdate.add(scrollTable);
+
+    JButton updateButton = new JButton("UPDATE DATA");
+    updateButton.setBounds(deskripsiLabel.getX(), deskripsiLabel.getY() + 150, 140, 50);
+    panelUpdate.add(updateButton);
+
+    JButton btnTambahData = new JButton("TAMBAH DATA");
+    btnTambahData.setBounds(deskripsiLabel.getX() + updateButton.getWidth() + 10, deskripsiLabel.getY() + 150, 140, 50);
+    panelUpdate.add(btnTambahData);
+
+    tableData.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent e) {
+        idBarang = Integer.parseInt(tableData.getValueAt(tableData.getSelectedRow(), 0).toString());
+        txtName.setText(tableData.getValueAt(tableData.getSelectedRow(), 1).toString());
+        deskripsiTxt.setText(tableData.getValueAt(tableData.getSelectedRow(), 2).toString());
+        textHarga.setText(tableData.getValueAt(tableData.getSelectedRow(), 3).toString());
+      }
+    });
+
+    updateButton.addActionListener(e -> {
+      String value[] = { txtName.getText(), deskripsiTxt.getText(), textHarga.getText() };
+      if ((txtName.getText().equals("")) && (deskripsiTxt.getText().equals(""))
+          && (textHarga.getText().equals(""))) {
+        JOptionPane.showMessageDialog(null, "Mohon untuk memilih data yang ingin Anda update pada tabel di samping");
+      } else {
+        if (Config.updateData(value, 4, idBarang)) {
+          JOptionPane.showMessageDialog(null, "Berhasil Melakukan Update Data");
+        }
+      }
+
+      mainPanel.removeAll();
+      mainPanel.repaint();
+      mainPanel.revalidate();
+
+      panelUpdateData(title, mainPanel);
+    });
+
+    panelUpdate.setLayout(null);
+    mainPanel.add(panelUpdate);
+    mainPanel.repaint();
+    mainPanel.revalidate();
   }
 }

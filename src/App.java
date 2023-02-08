@@ -19,6 +19,7 @@ public class App {
                 frameWindow.setSize(1280, 720);
                 frameWindow.setTitle("Kicuy Shop");
                 frameWindow.setResizable(false);
+                frameWindow.setLocationRelativeTo(null);
                 frameWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
                 frameWindow.setLayout(null);
 
@@ -58,6 +59,7 @@ public class App {
                 JButton btnGetAllData = new JButton("Query All Data");
                 btnGetAllData.setBounds(10, 100, 230, 80);
                 btnGetAllData.setBackground(new Color(120, 120, 120));
+                btnGetAllData.setForeground(new Color(225, 225, 225));
                 sideBar.add(btnGetAllData);
 
                 btnGetAllData.addActionListener(e -> {
@@ -73,6 +75,7 @@ public class App {
                 btnSearchData.setBounds(10, (int) btnGetAllData.getLocation().getY() +
                                 btnGetAllData.getHeight() + 30, 230, 80);
                 btnSearchData.setBackground(new Color(120, 120, 120));
+                btnSearchData.setForeground(new Color(225, 225, 225));
                 sideBar.add(btnSearchData);
 
                 btnSearchData.addActionListener(e -> {
@@ -84,17 +87,27 @@ public class App {
                 });
 
                 // btn update data
-                JButton btnUpdateData = new JButton("Update Data");
+                JButton btnUpdateData = new JButton("Tambah & Update Data");
                 btnUpdateData.setBounds(10, (int) btnSearchData.getLocation().getY() +
                                 btnSearchData.getHeight() + 30, 230, 80);
                 btnUpdateData.setBackground(new Color(120, 120, 120));
+                btnUpdateData.setForeground(new Color(225, 225, 225));
                 sideBar.add(btnUpdateData);
+
+                btnUpdateData.addActionListener(e -> {
+                        mainPanel.removeAll();
+                        mainPanel.repaint();
+                        mainPanel.revalidate();
+
+                        PanelTemplate.panelUpdateData("UPDATE DATA", mainPanel);
+                });
 
                 // btn delete data
                 JButton btnDeleteData = new JButton("Delete Data");
                 btnDeleteData.setBounds(10, (int) btnUpdateData.getLocation().getY() +
                                 btnUpdateData.getHeight() + 30, 230, 80);
                 btnDeleteData.setBackground(new Color(120, 120, 120));
+                btnDeleteData.setForeground(new Color(225, 225, 225));
                 sideBar.add(btnDeleteData);
 
                 // btn logout
@@ -102,6 +115,7 @@ public class App {
                 btnOut.setBounds(10, (int) btnDeleteData.getLocation().getY() +
                                 btnDeleteData.getHeight() + 30, 230, 80);
                 btnOut.setBackground(new Color(120, 120, 120));
+                btnOut.setForeground(new Color(225, 225, 225));
                 btnOut.addActionListener(e -> {
                         System.exit(0);
                 });

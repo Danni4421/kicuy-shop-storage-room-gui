@@ -30,7 +30,7 @@ public class PanelTemplate {
 
     String[] columnName = { "ID Barang", "Nama Barang",
         "Deskripsi Barang", "Harga Barang" };
-    JTable tableData = new JTable(Config.getAllData(), columnName);
+    JTable tableData = new JTable(Config.getAllData(false, ""), columnName);
     JScrollPane tableScroll = new JScrollPane(tableData);
     tableScroll.setBounds(20, 80, 700, 300);
 
@@ -189,8 +189,8 @@ public class PanelTemplate {
     panelUpdate.add(scrollDeskripsi);
 
     // table barang
-    String column[] = { "ID BARANG", "NAMA BARANG", "DESKRIPSI BARANG", "HARGA BARANG" };
-    JTable tableData = new JTable(Config.getAllData(), column);
+    String column[] = { "ID BARANG", "NAMA BARANG", "DESKRIPSI BARANG", "HARGA BARANG", "AKSI" };
+    JTable tableData = new JTable(Config.getAllData(true, "Pilih"), column);
     JScrollPane scrollTable = new JScrollPane(tableData);
     scrollTable.setBounds(nameLabel.getX() + 430, nameLabel.getY(), 520, 200);
     panelUpdate.add(scrollTable);
@@ -232,6 +232,94 @@ public class PanelTemplate {
 
     panelUpdate.setLayout(null);
     mainPanel.add(panelUpdate);
+    mainPanel.repaint();
+    mainPanel.revalidate();
+  }
+
+  public static void deletePanel(String title, JPanel mainPanel) {
+    JPanel deletePanel = new JPanel();
+    deletePanel.setBounds(0, 0, 1024, 624);
+    deletePanel.setBackground(new Color(196, 213, 229));
+
+    JLabel deletePanelLabel = new JLabel(title);
+    deletePanelLabel.setBounds(20, 20, 300, 50);
+    deletePanelLabel.setFont(new Font("Arial", Font.PLAIN, 40));
+    deletePanel.add(deletePanelLabel);
+
+    String column[] = { "ID BARANG", "NAMA BARANG", "DESKRIPSI BARANG", "HARGA BARANG", "AKSI" };
+    JTable tableDelete = new JTable(Config.getAllData(true, "Delete?"), column);
+    JScrollPane scrollTable = new JScrollPane(tableDelete);
+    scrollTable.setBounds(deletePanelLabel.getX(), deletePanelLabel.getY() + 50, 600, 300);
+    deletePanel.add(scrollTable);
+
+    JPanel deletedItem = new JPanel();
+    deletedItem.setBounds(scrollTable.getX() + 610, scrollTable.getY(), 350, 350);
+    deletedItem.setLayout(null);
+    deletePanel.add(deletedItem);
+
+    JLabel deletedItemLabel = new JLabel("ITEM");
+    deletedItemLabel.setBounds(150, 20, 100, 40);
+    deletedItemLabel.setFont(new Font("Arial", Font.PLAIN, 20));
+    deletedItem.add(deletedItemLabel);
+
+    JLabel labelName = new JLabel("Nama Barang");
+    labelName.setBounds(10, deletedItemLabel.getY() + 10, 200, 50);
+    deletedItem.add(labelName);
+
+    JTextField nameField = new JTextField();
+    nameField.setBounds(10, labelName.getY() + 35, 330, 30);
+    nameField.setBackground(new Color(255, 255, 255));
+    deletedItem.add(nameField);
+
+    JLabel labelDeskripsi = new JLabel("Deskripsi Barang");
+    labelDeskripsi.setBounds(10, nameField.getY() + 30, 200, 50);
+    deletedItem.add(labelDeskripsi);
+
+    JTextArea deskripsiArea = new JTextArea();
+    deskripsiArea.setBounds(10, labelDeskripsi.getY() + 35, 330, 60);
+    deskripsiArea.setEditable(false);
+    deletedItem.add(deskripsiArea);
+
+    JLabel labelHarga = new JLabel("Harga Barang");
+    labelHarga.setBounds(10, deskripsiArea.getY() + 60, 200, 50);
+    deletedItem.add(labelHarga);
+
+    JTextField hargaField = new JTextField();
+    hargaField.setBounds(10, labelHarga.getY() + 35, 330, 30);
+    hargaField.setBackground(new Color(255, 255, 255));
+    deletedItem.add(hargaField);
+
+    JButton btnDelete = new JButton("DELETE ITEM");
+    btnDelete.setBounds(10, hargaField.getY() + 50, 330, 50);
+    btnDelete.setBackground(new Color(217, 83, 79));
+    deletedItem.add(btnDelete);
+
+    btnDelete.addActionListener(e -> {
+      if ((!nameField.getText().equals("")) && (!deskripsiArea.getText().equals(""))
+          && (!hargaField.getText().equals(""))) {
+        int result = JOptionPane.showConfirmDialog(null, "Apakah anda yakin menghapus barang?", "DELETE?",
+            JOptionPane.YES_NO_OPTION);
+        if (result == JOptionPane.YES_NO_OPTION) {
+          Config.removeDataTemporary(idBarang);
+          deletePanel(title, mainPanel);
+        }
+      }
+    });
+
+    tableDelete.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
+      public void valueChanged(ListSelectionEvent Event) {
+        idBarang = Integer.parseInt(tableDelete.getValueAt(tableDelete.getSelectedRow(), 0).toString());
+        nameField.setText(tableDelete.getValueAt(tableDelete.getSelectedRow(), 1).toString());
+        nameField.setEditable(false);
+        deskripsiArea.setText(tableDelete.getValueAt(tableDelete.getSelectedRow(), 2).toString());
+        hargaField.setText(tableDelete.getValueAt(tableDelete.getSelectedRow(), 3).toString());
+        hargaField.setEditable(false);
+        deletePanel(title, mainPanel);
+      }
+    });
+
+    deletePanel.setLayout(null);
+    mainPanel.add(deletePanel);
     mainPanel.repaint();
     mainPanel.revalidate();
   }

@@ -29,7 +29,7 @@ public class Config {
   }
 
   // get all data
-  public static String[][] getAllData() {
+  public static String[][] getAllData(boolean isAksi, String aksi) {
     configConnection();
     ArrayList<Integer> idBarang = new ArrayList<Integer>();
     ArrayList<String> namaBarang = new ArrayList<String>();
@@ -54,7 +54,15 @@ public class Config {
       e.printStackTrace();
     }
 
-    String[][] resultBarang = new String[idBarang.size()][4];
+    int lengthArray = 0;
+    if (isAksi) {
+      lengthArray = 5;
+    } else {
+      lengthArray = 4;
+    }
+
+    String[][] resultBarang = new String[idBarang.size()][lengthArray];
+
     for (int i = 0; i < resultBarang.length; i++) {
       for (int j = 0; j < resultBarang[0].length; j++) {
         switch (j) {
@@ -70,6 +78,8 @@ public class Config {
           case 3:
             resultBarang[i][j] = hargaBarang.get(i).toString();
             break;
+          case 4:
+            resultBarang[i][j] = aksi;
         }
       }
     }
@@ -166,7 +176,7 @@ public class Config {
 
     try {
       state = conn.createStatement();
-      String query = "UPDATE tbl_barang SET `statusBarang` = 0 WHERE idBarang = " + id;
+      String query = "UPDATE tbl_barang SET `statusBarang` = '0' WHERE idBarang = " + id;
       if (!state.execute(query)) {
         System.out.println("Berhasil memindahkan ke dalam recycle bin!!");
         result = true;

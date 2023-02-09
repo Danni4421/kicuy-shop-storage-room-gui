@@ -6,6 +6,7 @@ import com.Panel.PanelTemplate;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JButton;
 
 // pallete
@@ -110,6 +111,14 @@ public class App {
                 btnDeleteData.setForeground(new Color(225, 225, 225));
                 sideBar.add(btnDeleteData);
 
+                btnDeleteData.addActionListener(e -> {
+                        mainPanel.removeAll();
+                        mainPanel.repaint();
+                        mainPanel.revalidate();
+
+                        PanelTemplate.deletePanel("DELETE DATA", mainPanel);
+                });
+
                 // btn logout
                 JButton btnOut = new JButton("Keluar");
                 btnOut.setBounds(10, (int) btnDeleteData.getLocation().getY() +
@@ -117,7 +126,11 @@ public class App {
                 btnOut.setBackground(new Color(120, 120, 120));
                 btnOut.setForeground(new Color(225, 225, 225));
                 btnOut.addActionListener(e -> {
-                        System.exit(0);
+                        int result = JOptionPane.showConfirmDialog(null, "Apakah Anda Yakin Ingin Keluar?", "Quit",
+                                        JOptionPane.YES_NO_OPTION);
+                        if (result == JOptionPane.YES_NO_OPTION) {
+                                System.exit(0);
+                        }
                 });
                 sideBar.add(btnOut);
 

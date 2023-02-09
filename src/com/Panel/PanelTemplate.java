@@ -4,6 +4,7 @@ import com.config.Config;
 
 import javax.swing.JPanel;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
@@ -203,6 +204,10 @@ public class PanelTemplate {
     btnTambahData.setBounds(deskripsiLabel.getX() + updateButton.getWidth() + 10, deskripsiLabel.getY() + 150, 140, 50);
     panelUpdate.add(btnTambahData);
 
+    btnTambahData.addActionListener(e -> {
+      FrameCreateData();
+    });
+
     tableData.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
       public void valueChanged(ListSelectionEvent e) {
         idBarang = Integer.parseInt(tableData.getValueAt(tableData.getSelectedRow(), 0).toString());
@@ -322,5 +327,14 @@ public class PanelTemplate {
     mainPanel.add(deletePanel);
     mainPanel.repaint();
     mainPanel.revalidate();
+  }
+
+  public static void FrameCreateData() {
+    JFrame createData = new JFrame();
+    createData.setSize(400, 700);
+    createData.setResizable(false);
+    createData.setLocationRelativeTo(null);
+    createData.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    createData.setVisible(true);
   }
 }

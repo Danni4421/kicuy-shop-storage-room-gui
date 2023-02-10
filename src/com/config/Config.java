@@ -125,6 +125,27 @@ public class Config {
     return result;
   }
 
+  public static boolean addData(String... value) {
+    configConnection();
+    boolean data = false;
+
+    try {
+
+      state = conn.createStatement();
+
+      String query = "INSERT INTO tbl_barang VALUES (" + null + ",'" + value[0] +
+          "', '" + value[1] + "', '" + value[2] + "', '" + 1 + "')";
+
+      if (!state.execute(query)) {
+        data = true;
+      }
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+
+    return data;
+  }
+
   public static boolean updateData(String[] value, int choice, int id) {
     configConnection();
     boolean data = false;

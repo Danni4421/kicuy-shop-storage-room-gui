@@ -3,6 +3,7 @@ package com.Panel;
 import com.config.Config;
 
 import javax.swing.JPanel;
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -10,6 +11,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 import javax.swing.JScrollPane;
@@ -204,6 +206,18 @@ public class PanelTemplate {
     btnTambahData.setBounds(deskripsiLabel.getX() + updateButton.getWidth() + 10, deskripsiLabel.getY() + 150, 140, 50);
     panelUpdate.add(btnTambahData);
 
+    JButton btnFilter = new JButton("FILTER");
+    btnFilter.setBounds(deskripsiLabel.getX() + updateButton.getWidth() + 160, deskripsiLabel.getY() + 150, 140, 50);
+    panelUpdate.add(btnFilter);
+
+    btnFilter.addActionListener(e -> {
+      mainPanel.removeAll();
+      mainPanel.repaint();
+      mainPanel.revalidate();
+
+      panelUpdateData(title, mainPanel);
+    });
+
     btnTambahData.addActionListener(e -> {
       FrameCreateData();
     });
@@ -331,10 +345,72 @@ public class PanelTemplate {
 
   public static void FrameCreateData() {
     JFrame createData = new JFrame();
-    createData.setSize(400, 700);
+    createData.setSize(400, 600);
+    createData.setTitle("TAMBAH DATA");
     createData.setResizable(false);
     createData.setLocationRelativeTo(null);
-    createData.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    createData.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+    JPanel createDataPanel = new JPanel();
+    createDataPanel.setSize(400, 700);
+    createDataPanel.setBackground(new Color(255, 255, 255));
+    createDataPanel.setLayout(null);
+
+    JLabel labelCreateData = new JLabel("TAMBAH DATA BARANG");
+    labelCreateData.setFont(new Font("Arial", Font.PLAIN, 25));
+    labelCreateData.setBounds(50, 20, 300, 50);
+
+    JLabel nameLabel = new JLabel("Nama Barang");
+    nameLabel.setBounds(50, labelCreateData.getY() + 45, 300, 50);
+
+    JTextField txtName = new JTextField();
+    txtName.setBounds(50, nameLabel.getY() + 45, 290, 50);
+    txtName.setMargin(new Insets(0, 10, 0, 10));
+
+    JLabel deskripsiLabel = new JLabel("Deskripsi Barang");
+    deskripsiLabel.setBounds(50, txtName.getY() + 50, 300, 50);
+
+    JTextArea txtDeskripsi = new JTextArea();
+    txtDeskripsi.setLineWrap(true);
+    txtDeskripsi.setWrapStyleWord(true);
+    txtDeskripsi.setMargin(new Insets(10, 10, 10, 10));
+    Border border = BorderFactory.createLineBorder(new Color(40, 42, 52), 1);
+    txtDeskripsi.setBorder(border);
+    JScrollPane scrollDeskripsi = new JScrollPane(txtDeskripsi);
+    scrollDeskripsi.setBounds(50, deskripsiLabel.getY() + 45, 300, 100);
+
+    JLabel hargaLabel = new JLabel("Harga Barang");
+    hargaLabel.setBounds(50, scrollDeskripsi.getY() + scrollDeskripsi.getHeight(), 300, 50);
+
+    JTextField txtHarga = new JTextField();
+    txtHarga.setBounds(50, hargaLabel.getY() + 45, 290, 50);
+    txtHarga.setMargin(new Insets(0, 10, 0, 10));
+
+    JButton btnTambah = new JButton("TAMBAH DATA");
+    btnTambah.setFont(new Font("Arial", Font.PLAIN, 18));
+    btnTambah.setBounds(50, txtHarga.getY() + 70, 290, 100);
+    btnTambah.setBackground(new Color(40, 167, 69));
+
+    btnTambah.addActionListener(event -> {
+      if ((!txtName.getText().equals("")) && (!txtDeskripsi.getText().equals("")) &&
+          (!txtHarga.getText().equals(""))) {
+        if (Config.addData(txtName.getText(), txtDeskripsi.getText(), txtHarga.getText())) {
+          JOptionPane.showMessageDialog(null, "Data Berhasil ditambahkan");
+        } else {
+          JOptionPane.showMessageDialog(null, "Data Gagal ditambahkan");
+        }
+      }
+    });
+
+    createDataPanel.add(btnTambah);
+    createDataPanel.add(txtHarga);
+    createDataPanel.add(hargaLabel);
+    createDataPanel.add(scrollDeskripsi);
+    createDataPanel.add(deskripsiLabel);
+    createDataPanel.add(txtName);
+    createDataPanel.add(nameLabel);
+    createDataPanel.add(labelCreateData);
+    createData.add(createDataPanel);
     createData.setVisible(true);
   }
 }
